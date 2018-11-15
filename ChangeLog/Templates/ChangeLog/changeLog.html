@@ -1,0 +1,31 @@
+{% if latest_event_list %}
+    <table style="width: 60%" >
+    <tr>
+        <th width ="20%">Data</th>
+        <th>Zmiana</th>
+    </tr>
+    {% for event in latest_event_list %}
+        <tr>
+            <th width ="20%">{{ event.publication_date }} </th>
+            <th>{{ event.event_text }}</th>
+        </tr>
+    {% endfor %}
+    </table>
+
+    <p>
+    Strona
+        {% for page in pages_list %}
+            <a href="/changeLog/{{ page }}/">{{ page }}</a>
+        {% endfor %}
+    </p>
+
+{% else %}
+    <p>Brak zdarzeń</p>
+{% endif %}
+
+
+<form action= "." method="post">
+{% csrf_token %}
+Treść: <input type="text" name="event_text">
+<input type="submit" value="Publikuj" />
+</form>
