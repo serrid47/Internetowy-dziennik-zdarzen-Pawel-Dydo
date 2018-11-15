@@ -1,0 +1,19 @@
+{% if user.is_authenticated  %}
+<header>
+		<nav>
+			<a href="/changeLog">Change Log</a>
+            <a href="/signout">Sign Out</a>
+        </nav>
+</header>
+{% else %}
+<header>
+		<nav>
+			<a href="/signin">Login</a>
+			<a href="/signup">Sign up</a>
+        </nav>
+</header>
+{% endif %}
+
+
+{% block content %}
+{% endblock %}

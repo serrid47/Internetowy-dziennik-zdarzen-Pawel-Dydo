@@ -1,3 +1,5 @@
+{% extends "DziennikZdarzen/base.html" %}
+{% block content %}
 {% if latest_event_list %}
     <table style="width: 60%" >
     <tr>
@@ -29,3 +31,4 @@
 Treść: <input type="text" name="event_text">
 <input type="submit" value="Publikuj" />
 </form>
+{% endblock %}

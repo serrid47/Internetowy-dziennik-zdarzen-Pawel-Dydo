@@ -2,8 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .models import Event
 from .forms import EventForm
+from django.contrib.auth.decorators import login_required
 
 
+
+@login_required
 def changelog(request):
     if request.method == 'POST':
         form = EventForm(request.POST)
@@ -26,7 +29,7 @@ def changelog(request):
                'pages_list':pages_list}
     return render(request, 'changeLog/changeLog.html', context)
 
-
+@login_required
 def changelogwithpage(request, page):
     if request.method == 'POST':
         form = EventForm(request.POST)
