@@ -125,4 +125,5 @@ LOGIN_URL = '/signin/'
 
 LOGOUT_REDIRECT_URL = '/signin/'
 
-
+AUTH_USER_MODEL = 'changeLog.MyUser'
+LOGIN_REDIRECT_URL = 'changeLog:changeLog'

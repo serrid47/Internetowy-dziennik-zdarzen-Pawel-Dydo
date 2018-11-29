@@ -2,35 +2,24 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import logout_then_login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect
+from django.contrib.auth.urls import views as auth_views
+from .forms import RegistrationForm
 from django.contrib.auth import logout
-
+from django.contrib.auth import get_user_model
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('changeLog:changeLog')
+            return redirect('signin')
     else:
-        form = UserCreationForm()
+        form = RegistrationForm()
     return render(request, 'DziennikZdarzen/signup.html', {'form': form})
 
+class LoginUserView(auth_views.LoginView):
+    template_name = 'DziennikZdarzen/signin.html'
 
-def signin(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            login(request, form.get_user())
-            return redirect('changeLog:changeLog')
-        else:
-            return redirect('signup')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'DziennikZdarzen/signin.html', {'form': form})
 
 
 def signout(request):

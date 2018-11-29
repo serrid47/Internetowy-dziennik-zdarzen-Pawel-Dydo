@@ -1,15 +1,17 @@
 {% extends "DziennikZdarzen/base.html" %}
 {% block content %}
-{% if latest_event_list %}
+{% if latest_log_list %}
     <table style="width: 60%" >
     <tr>
+        <th>Użytkownik</th>
         <th width ="20%">Data</th>
         <th>Zmiana</th>
     </tr>
-    {% for event in latest_event_list %}
+    {% for log in latest_log_list %}
         <tr>
-            <th width ="20%">{{ event.publication_date }} </th>
-            <th>{{ event.event_text }}</th>
+            <th>{{ log.user }}</th>
+            <th width ="20%">{{ log.publication_date }} </th>
+            <th>{{ log.log_text }}</th>
         </tr>
     {% endfor %}
     </table>
@@ -28,7 +30,7 @@
 
 <form action= "." method="post">
 {% csrf_token %}
-Treść: <input type="text" name="event_text">
+Treść: <input type="text" name="log_text">
 <input type="submit" value="Publikuj" />
 </form>
 {% endblock %}
