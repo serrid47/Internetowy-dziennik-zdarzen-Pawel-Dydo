@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.urls import path
 from . import views
-
-
 app_name = 'changeLog'
+
+
 urlpatterns = [
-    path('', views.changelog, name='changeLog'),
-    path('<int:page>/', views.changelogwithpage, name='changeLogWithPage'),
+    path('create/', views.ChangelogCreate.as_view(), name='changelogCreate'),
+    path('<str:name>/', views.LogCreate.as_view(), name='logCreate'),
 ]

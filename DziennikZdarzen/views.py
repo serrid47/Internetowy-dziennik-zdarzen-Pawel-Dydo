@@ -17,9 +17,9 @@ def signup(request):
         form = RegistrationForm()
     return render(request, 'DziennikZdarzen/signup.html', {'form': form})
 
+
 class LoginUserView(auth_views.LoginView):
     template_name = 'DziennikZdarzen/signin.html'
-
 
 
 def signout(request):
