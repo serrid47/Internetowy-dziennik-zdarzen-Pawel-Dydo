@@ -1,0 +1,23 @@
+{% extends "DziennikZdarzen/base.html" %}
+{% block content %}
+    {% if users_list %}
+    <table style="width: 60%" >
+    <tr>
+        <th>Uzytkownik</th>
+    </tr>
+    {% for user in users_list %}
+        <tr>
+            <th>{{ user.username }}</th>
+        </tr>
+    {% endfor %}
+    </table>
+    {% else %}
+        <p>Brak zdarzen</p>
+    {% endif %}
+
+<form action= "." method="post">
+{% csrf_token %}
+Nazwa uzytkownika: <input type="text" name="username">
+<input type="submit" value="Zapros" />
+</form>
+{% endblock %}

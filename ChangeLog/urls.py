@@ -20,5 +20,7 @@ app_name = 'changeLog'
 
 urlpatterns = [
     path('create/', views.ChangelogCreate.as_view(), name='changelogCreate'),
+    path('<str:name>/settings/', views.ChangelogSettings.as_view(), name='changelogSettings'),
     path('<str:name>/', views.LogCreate.as_view(), name='logCreate'),
+
 ]

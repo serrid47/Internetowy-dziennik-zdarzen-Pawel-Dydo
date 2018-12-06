@@ -17,3 +17,9 @@ class CreateChangelogForm(forms.ModelForm):
     class Meta:
         model = ChangeLog
         fields =('nazwa',)
+
+
+class InviteToChangelogForm(forms.Form):
+    username = forms.CharField(label='username', max_length=5000)
+
+

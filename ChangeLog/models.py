@@ -9,6 +9,8 @@ class MyUser(AbstractUser):
 
 class ChangeLog(models.Model):
     nazwa = models.CharField(max_length=250)
+    users = models.ManyToManyField(MyUser)
+
 
 class Log(models.Model):
     log_text = models.CharField(max_length=5000)
