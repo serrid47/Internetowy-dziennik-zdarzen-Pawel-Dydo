@@ -25,7 +25,7 @@ SECRET_KEY = '@bat_yuv12nv2j7*i4hx^)4qqqc#plnc7-txwxisj+#2%yl7k$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

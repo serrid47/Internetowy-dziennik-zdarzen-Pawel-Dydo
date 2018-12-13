@@ -4,20 +4,34 @@
     <table style="width: 60%" >
     <tr>
         <th>Uzytkownik</th>
+        <th>Prawa</th>
     </tr>
     {% for user in users_list %}
         <tr>
-            <th>{{ user.username }}</th>
+            <td>{{ user.user.username }}</td>
+            <td>{{ user.permission }}</td>
         </tr>
     {% endfor %}
     </table>
     {% else %}
-        <p>Brak zdarzen</p>
     {% endif %}
 
-<form action= "." method="post">
-{% csrf_token %}
-Nazwa uzytkownika: <input type="text" name="username">
-<input type="submit" value="Zapros" />
-</form>
+{% if admin %}
+    <p>Uprawnienia:
+        <form action="" method="post">{% csrf_token %}
+        {{ form_role.as_table}}
+        <input type="submit" value="Create" />
+        </form>
+    </p>
+{% endif %}
+
+{% if invite %}
+    <p>Zaproszenia:
+    <form action= "." method="post">{% csrf_token %}
+    Nazwa uzytkownika: <input type="text" name="username">
+    <input type="submit" value="Zapros" />
+    </form>
+    </p>
+{% endif %}
+
 {% endblock %}

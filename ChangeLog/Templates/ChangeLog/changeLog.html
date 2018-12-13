@@ -9,7 +9,7 @@
     </tr>
     {% for log in latest_log_list %}
         <tr>
-            <th>{{ log.user }}</th>
+            <th>{{ log.user_changelog.user}}</th>
             <th width ="20%">{{ log.publication_date }} </th>
             <th>{{ log.log_text }}</th>
         </tr>
