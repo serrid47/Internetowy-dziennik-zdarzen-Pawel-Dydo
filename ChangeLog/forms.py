@@ -1,5 +1,5 @@
 from django import forms
-from .models import ChangeLog, Log
+from .models import ChangeLog, Log, UserInChangelog, MyUser
 
 
 class LogForm(forms.ModelForm):
@@ -21,5 +21,12 @@ class CreateChangelogForm(forms.ModelForm):
 
 class InviteToChangelogForm(forms.Form):
     username = forms.CharField(label='username', max_length=5000)
+    
+    
+class UserInChangelogForm(forms.ModelForm):
+    class Meta:
+        model = UserInChangelog
+        fields =('user', 'permission',)
+
 
 
