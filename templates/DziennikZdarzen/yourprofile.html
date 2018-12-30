@@ -1,0 +1,16 @@
+{% extends "DziennikZdarzen/base.html" %}
+
+{% block content %}
+{{ profile.avatar.url }}
+<p></p>
+<img src="{{ profile.avatar.url }}">
+
+<form action="{% url 'yourprofile' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+    <p>
+        <input id="id_image" type="file" class="" name="avatar">
+    </p>
+    <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}
+

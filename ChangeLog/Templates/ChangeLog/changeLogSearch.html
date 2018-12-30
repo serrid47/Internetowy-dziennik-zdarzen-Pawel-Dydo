@@ -1,6 +1,6 @@
 {% extends "DziennikZdarzen/base.html" %}
 {% block content %}
-{% if latest_log_list %}
+{% if search_results %}
     <table style="width: 60%" >
     <tr>
         <th></th>
@@ -8,7 +8,7 @@
         <th width ="20%">Data</th>
         <th>Zmiana</th>
     </tr>
-    {% for log in latest_log_list %}
+    {% for log in search_results %}
         <tr>
             <th><img src="{{ log.user_changelog.user.avatar.url }}" width="30" height="30"></th>
             <th>{{ log.user_changelog.user}}</th>
@@ -21,7 +21,7 @@
     <p>
     Strona
         {% for page in pages_list %}
-            <a href="/changeLog/{{ name }}/{{ page }}/">{{ page }}</a>
+            <a href="/changeLog/{{ name }}/search={{ search_text }}/{{ page }}/">{{ page }}</a>
         {% endfor %}
     </p>
 
@@ -35,12 +35,4 @@
 Treść: <input type="text" name="log_text">
 <input type="submit" value="Publikuj" />
 </form>
-
-<form action= "." method="post">
-{% csrf_token %}
-Treść: <input type="text" name="search_text">
-<input type="submit" value="Wyszukaj" />
-</form>
-
-
 {% endblock %}

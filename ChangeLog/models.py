@@ -14,8 +14,9 @@ PERMISSIONS = (
     ('rwxiad', 'RWXIAD'),
 )
 
+
 class MyUser(AbstractUser):
-   pass
+    avatar = models.ImageField(upload_to='avatars/', default='avatars/none/no-img.jpg')
 
 
 class ChangeLog(models.Model):
