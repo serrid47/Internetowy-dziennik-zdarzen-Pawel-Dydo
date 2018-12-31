@@ -5,11 +5,11 @@ from django.contrib.auth.models import AbstractUser
 import changeLog
 
 PERMISSIONS = (
-    ('r','R'),
+    ('r', 'R'),
     ('rw', 'RW'),
-    ('rwx','RWX'),
-    ('rwi','RWI'),
-    ('rwxi','RWXI'),
+    ('rwx', 'RWX'),
+    ('rwi', 'RWI'),
+    ('rwxi', 'RWXI'),
     ('rwxia', 'RWXIA'),
     ('rwxiad', 'RWXIAD'),
 )

@@ -9,11 +9,17 @@
         <th>Zmiana</th>
     </tr>
     {% for log in latest_log_list %}
-        <tr>
+        <tr id={{ log.id }}>
             <th><img src="{{ log.user_changelog.user.avatar.url }}" width="30" height="30"></th>
             <th>{{ log.user_changelog.user}}</th>
             <th width ="20%">{{ log.publication_date }} </th>
             <th>{{ log.log_text }}</th>
+
+            {% if edit_perm %}
+                {% if log.user_changelog.user == request.user or admin_perm %}
+                    <th><button class="btn btn-primary editButton" log_id="{{ log.id }}">Edytuj</button></th>
+                {% endif %}
+            {% endif %}
         </tr>
     {% endfor %}
     </table>
@@ -29,12 +35,13 @@
     <p>Brak zdarzeń</p>
 {% endif %}
 
-
+{% if write_perm %}
 <form action= "." method="post">
 {% csrf_token %}
 Treść: <input type="text" name="log_text">
 <input type="submit" value="Publikuj" />
 </form>
+{% endif %}
 
 <form action= "." method="post">
 {% csrf_token %}
@@ -42,5 +49,63 @@ Treść: <input type="text" name="search_text">
 <input type="submit" value="Wyszukaj" />
 </form>
 
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+{% csrf_token %}
+<script> $(document).ready(function() {
+
+    function getCookie(c_name) {
+        if(document.cookie.length > 0) {
+            c_start = document.cookie.indexOf(c_name + "=");
+            if(c_start != -1) {
+                c_start = c_start + c_name.length + 1;
+                c_end = document.cookie.indexOf(";", c_start);
+                if(c_end == -1) c_end = document.cookie.length;
+                return unescape(document.cookie.substring(c_start,c_end));
+            }
+        }
+        return "";
+    }
+
+    $(function () {
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken")
+            }
+        });
+    });
+
+    $(document).on('click', '.editButton', function() {
+        let log_id = $(this).attr('log_id');
+
+        $.ajax({
+            url : '/changeLog/{{ name }}/update',
+            type : 'POST',
+            data : { log_id : log_id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'},
+            success: function(data) {
+                $("#"+log_id).html(data);
+                $("tak"+log_id).html(data);
+                }
+        });
+    });
+    $(document).on('click', '.saveButton', function() {
+        var log_id = $(this).attr('log_id');
+        var log_text =$("#log_text"+log_id).val();
+
+        $.ajax({
+            url : '/changeLog/{{ name }}/save',
+            type : 'POST',
+            data : {log_id: log_id,
+                    log_text: log_text,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                   },
+            success : function(data) {
+                $("#"+log_id).html(data);
+                }
+        });
+    });
+});</script>
 
 {% endblock %}
