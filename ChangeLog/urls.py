@@ -25,5 +25,7 @@ urlpatterns = [
     path('<str:name>/', views.LogCreate.as_view(), name='logCreate'),
     path('<str:name>/search=<str:search_text>/<int:page>/', views.LogSearch.as_view(), name='logSearch'),
     path('<str:name>/search=<str:search_text>', views.LogSearch.as_view(), name='logSearch'),
+    path('<str:name>/update', views.LogUpdate, name='logUpdate'),
+    path('<str:name>/save', views.LogSave, name='logSave'),
 
 ]
