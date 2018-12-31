@@ -1,8 +1,11 @@
 {% extends "DziennikZdarzen/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
+
+<h2>Utwórz dziennik zmian</h2>
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form|crispy }}
     <button type="submit">Stwórz</button>
   </form>
 {% endblock %}

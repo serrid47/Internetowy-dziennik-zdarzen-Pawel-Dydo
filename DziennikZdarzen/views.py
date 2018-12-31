@@ -4,7 +4,7 @@ from changeLog.forms import UserAvatarForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.urls import views as auth_views
 from .forms import RegistrationForm
-from django.views.generic import View
+from django.views.generic import View, UpdateView, ListView
 
 def signup(request):
     if request.method == 'POST':
@@ -25,23 +25,31 @@ def signout(request):
     return logout_then_login(request)
 
 
-class userprofile(View):
+class userprofile(ListView):
     template_name = 'DziennikZdarzen/profile.html'
+    model = MyUser
+    fields = ['first_name', 'last_name', 'avatar']
 
     def get(self, request, name):
         profile = MyUser.objects.get(username=name)
-        context = {'profile': profile}
+        form = UserAvatarForm(initial={'first_name': profile.first_name, 'last_name': profile.last_name})
+        context = {'profile': profile, 'form': form}
         return render(request, 'DziennikZdarzen/profile.html', context)
 
 
-class yourprofile(View):
+class yourprofile(UpdateView):
     template_name = 'DziennikZdarzen/yourprofile.html'
 
-    def post(self,request):
+    def post(self, request):
         profile = MyUser.objects.get(username=request.user.username)
         form = UserAvatarForm(request.POST, request.FILES)
         if form.is_valid():
-            profile.avatar = form.cleaned_data['avatar']
+            print(form.cleaned_data['avatar'])
+            if(form.cleaned_data['avatar'] != 'avatars/none/no-img.jpg'):
+                profile.avatar = form.cleaned_data['avatar']
+            profile.first_name = form.cleaned_data['first_name']
+            profile.last_name = form.cleaned_data['last_name']
+            profile.mail = form.cleaned_data['mail']
             profile.save()
         context = {'profile': profile, 'form': form}
         return render(request, 'DziennikZdarzen/yourprofile.html', context)
@@ -49,7 +57,8 @@ class yourprofile(View):
 
     def get(self, request):
         profile = MyUser.objects.get(username=request.user.username)
-        form = UserAvatarForm()
+        form = UserAvatarForm(initial={'first_name': profile.first_name, 'last_name': profile.last_name,
+                                       'mail': profile.mail, 'avatar': profile.avatar.url})
         context = {'profile': profile, 'form': form}
         return render(request, 'DziennikZdarzen/yourprofile.html', context)
 

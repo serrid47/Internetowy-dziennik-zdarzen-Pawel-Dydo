@@ -8,8 +8,7 @@ from changeLog.models import MyUser
 class RegistrationForm(UserCreationForm):
     class Meta:
         model = MyUser
-        fields = ('username',
-                            )
+        fields = ('username',)
 
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)

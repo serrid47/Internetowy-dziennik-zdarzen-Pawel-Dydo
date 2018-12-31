@@ -1,5 +1,7 @@
+    <th>{{ log.publication_date }} </th>
     <th><img src="{{ log.user_changelog.user.avatar.url }}" width="30" height="30"></th>
+
     <th>{{ log.user_changelog.user}}</th>
-    <th width ="20%">{{ log.publication_date }} </th>
-    <th><textarea id=log_text{{ log.id }}>{{ log.log_text }}</textarea></th>
+
+    <th><textarea style="width: 100%" id=log_text{{ log.id }}>{{ log.log_text }}</textarea></th>
     <th><button class="btn btn-primary saveButton" log_id="{{ log.id }}">Zapisz</button></th>

@@ -9,7 +9,7 @@ from .functions import check_permission, check_if_user_in_changelog
 from django.template.loader import render_to_string
 
 
-class LogCreate(CreateView):
+class LogCreate(View):
     template_name = 'changelog/changelog.html'
     def post(self, request, name, page=1):
         form_add = LogForm(request.POST)
@@ -35,11 +35,11 @@ class LogCreate(CreateView):
         if (check_permission('r', name, request.user)):
             form_add = LogForm()
             form_search = LogSearchForm()
-            pages = (Log.objects.filter(user_changelog__changeLog__nazwa=name).count() // 20) + 1
+            pages = (Log.objects.filter(user_changelog__changeLog__nazwa=name).count() // 10) + 1
             pages_list = []
             for i in range(pages):
                 pages_list.append(i + 1)
-            latest_log_list = Log.objects.filter(user_changelog__changeLog__nazwa=name).order_by('-publication_date')[(page-1)*20:page*20]
+            latest_log_list = Log.objects.filter(user_changelog__changeLog__nazwa=name).order_by('-publication_date')[(page-1)*10:page*10]
             write_perm = check_permission('w', name, request.user)
             edit_perm = check_permission('x', name, request.user)
             admin_perm = check_permission('a', name, request.user)
@@ -67,8 +67,8 @@ class LogSearch(View):
             search_results = Log.objects.filter(user_changelog__changeLog__nazwa=name)\
                 .filter(log_text__contains=search_text)
             search_results_page = Log.objects.filter(user_changelog__changeLog__nazwa=name)\
-                .filter(log_text__contains=search_text).order_by('-publication_date')[(page - 1) * 20:page * 20]
-            pages = (search_results.count() // 20) + 1
+                .filter(log_text__contains=search_text).order_by('-publication_date')[(page - 1) * 10:page * 10]
+            pages = (search_results.count() // 10) + 1
             pages_list = []
             for i in range(pages):
                 pages_list.append(i + 1)
@@ -115,11 +115,13 @@ class ChangelogSettings(View):
         if form_invite.is_valid():
             if (check_permission('i', name, request.user)):
                 user = MyUser.objects.get(username=form_invite.cleaned_data['username'])
-                changelog = ChangeLog.objects.get(nazwa=name)
-                user_in = UserInChangelog()
-                user_in.user = user
-                user_in.changeLog = changelog
-                user_in.save()
+                users = UserInChangelog.objects.filter(changeLog__nazwa=name, user_id=user.pk)
+                if(users.count()<1):
+                    changelog = ChangeLog.objects.get(nazwa=name)
+                    user_in = UserInChangelog()
+                    user_in.user = user
+                    user_in.changeLog = changelog
+                    user_in.save()
 
         if form_role.is_valid():
             if (check_permission('a', name, request.user)):

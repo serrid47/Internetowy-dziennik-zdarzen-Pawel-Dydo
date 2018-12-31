@@ -37,7 +37,7 @@ class UserInChangelogForm(forms.ModelForm):
 class UserAvatarForm(forms.ModelForm):
     class Meta:
         model = MyUser
-        fields = ('first_name', 'avatar')
+        fields = ('first_name', 'last_name', 'mail', 'avatar', )
 
 
 

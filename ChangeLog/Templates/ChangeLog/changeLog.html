@@ -1,18 +1,58 @@
 {% extends "DziennikZdarzen/base.html" %}
 {% block content %}
 {% if latest_log_list %}
-    <table style="width: 60%" >
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            display: inline-table;
+            table-layout:fixed;
+            border: none;
+            word-wrap:break-word;
+            overflow:scroll;
+
+}        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+}
+        tr:nth-child(even) {
+            background-color: #dddddd;}
+    </style>
+
+    <script>
+            $(document).ready(function(){
+          $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
+    </script>
+
+<form action= "." method="post">
+{% csrf_token %}
+    <p>
+        <input id="myInput" type="text" placeholder="Search.." name="search_text">
+        <input type="submit" value="Wyszukaj" />
+    </p>
+</form>
+
+    <table class="table-striped" width="100%">
     <tr>
-        <th></th>
-        <th>Użytkownik</th>
-        <th width ="20%">Data</th>
+        <th width="8%">Data</th>
+        <th width="5%"></thwidth>
+        <th width="15%">Użytkownik</th>
         <th>Zmiana</th>
+        <th width="8%"></th>
     </tr>
     {% for log in latest_log_list %}
         <tr id={{ log.id }}>
+            <th>{{ log.publication_date }} </th>
             <th><img src="{{ log.user_changelog.user.avatar.url }}" width="30" height="30"></th>
             <th>{{ log.user_changelog.user}}</th>
-            <th width ="20%">{{ log.publication_date }} </th>
+
             <th>{{ log.log_text }}</th>
 
             {% if edit_perm %}
@@ -24,12 +64,18 @@
     {% endfor %}
     </table>
 
-    <p>
-    Strona
-        {% for page in pages_list %}
-            <a href="/changeLog/{{ name }}/{{ page }}/">{{ page }}</a>
-        {% endfor %}
-    </p>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+    <nav aria-label="...">
+        <ul class="pagination pagination-sm">
+            {% for page in pages_list %}
+                <li class="page-item"><a class="page-link" href="/changeLog/{{ name }}/{{ page }}">{{ page }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
 
 {% else %}
     <p>Brak zdarzeń</p>
@@ -43,11 +89,6 @@ Treść: <input type="text" name="log_text">
 </form>
 {% endif %}
 
-<form action= "." method="post">
-{% csrf_token %}
-Treść: <input type="text" name="search_text">
-<input type="submit" value="Wyszukaj" />
-</form>
 
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>

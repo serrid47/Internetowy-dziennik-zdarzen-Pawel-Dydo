@@ -5,18 +5,19 @@ from django.contrib.auth.models import AbstractUser
 import changeLog
 
 PERMISSIONS = (
+    ('d', 'D'),
     ('r', 'R'),
     ('rw', 'RW'),
     ('rwx', 'RWX'),
     ('rwi', 'RWI'),
     ('rwxi', 'RWXI'),
     ('rwxia', 'RWXIA'),
-    ('rwxiad', 'RWXIAD'),
 )
 
 
 class MyUser(AbstractUser):
     avatar = models.ImageField(upload_to='avatars/', default='avatars/none/no-img.jpg')
+    mail = models.EmailField(max_length=250)
 
 
 class ChangeLog(models.Model):

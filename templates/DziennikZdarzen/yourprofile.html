@@ -1,16 +1,17 @@
 {% extends "DziennikZdarzen/base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
-{{ profile.avatar.url }}
-<p></p>
-<img src="{{ profile.avatar.url }}">
 
-<form action="{% url 'yourprofile' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-    <p>
-        <input id="id_image" type="file" class="" name="avatar">
-    </p>
-    <input type="submit" value="Submit" />
-</form>
+    <h2>{{ profile.username }}</h2>
+   <div class="col-sm-3 col-md-5">
+                        <img src="{{ profile.avatar.url }}" alt="" class="img-rounded img-responsive"  width="100%" />
+   </div>
+
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit">Zapisz</button>
+  </form>
 
 {% endblock %}
-
