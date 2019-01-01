@@ -124,14 +124,13 @@ STATIC_URL = '/static/'
 STATIC_ROOT = (os.path.join(BASE_DIR, 'static'))
 
 LOGIN_URL = '/signin/'
-
 LOGOUT_REDIRECT_URL = '/signin/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'changeLog.MyUser'
-LOGIN_REDIRECT_URL = 'changeLog:changelogCreate'
+LOGIN_REDIRECT_URL = 'changeLog:changelogs'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

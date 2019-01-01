@@ -1,152 +1,162 @@
 {% extends "DziennikZdarzen/base.html" %}
 {% block content %}
-{% if latest_log_list %}
-    <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            display: inline-table;
-            table-layout:fixed;
-            border: none;
-            word-wrap:break-word;
-            overflow:scroll;
+    {% if latest_log_list %}
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                display: inline-table;
+                table-layout: fixed;
+                border: none;
+                word-wrap: break-word;
+                overflow: scroll;
 
-}        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-}
-        tr:nth-child(even) {
-            background-color: #dddddd;}
-    </style>
+            }
 
-    <script>
-            $(document).ready(function(){
-          $("#myInput").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function() {
-              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+        </style>
+
+        <script>
+            $(document).ready(function () {
+                $("#myInput").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#myTable tr").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
             });
-          });
-        });
-    </script>
+        </script>
 
-<form action= "." method="post">
-{% csrf_token %}
-    <p>
-        <input id="myInput" type="text" placeholder="Search.." name="search_text">
-        <input type="submit" value="Wyszukaj" />
-    </p>
-</form>
+        <form action="." method="post">
+            {% csrf_token %}
+            <p>
+                <input id="myInput" type="text" placeholder="Search.." name="search_text">
+                <input type="submit" value="Wyszukaj"/>
+            </p>
+        </form>
 
-    <table class="table-striped" width="100%">
-    <tr>
-        <th width="8%">Data</th>
-        <th width="5%"></thwidth>
-        <th width="15%">Użytkownik</th>
-        <th>Zmiana</th>
-        <th width="8%"></th>
-    </tr>
-    {% for log in latest_log_list %}
-        <tr id={{ log.id }}>
-            <th>{{ log.publication_date }} </th>
-            <th><img src="{{ log.user_changelog.user.avatar.url }}" width="30" height="30"></th>
-            <th>{{ log.user_changelog.user}}</th>
+        <table class="table-striped" width="100%">
+            <tr>
+                <th width="8%">Data</th>
+                <th width="5%"></thwidth>
+                <th width="15%">Użytkownik</th>
+                <th>Zmiana</th>
+                <th width="8%"></th>
+            </tr>
+            {% for log in latest_log_list %}
+                <tr id={{ log.id }}>
+                    <th>{{ log.publication_date }} </th>
+                    <th><img src="{{ log.user_changelog.user.avatar.url }}" width="30" height="30"></th>
+                    <th><a href="/profile/{{ log.user_changelog.user}}">{{ log.user_changelog.user }}</a></th>
+                    <th>{{ log.log_text }}</th>
 
-            <th>{{ log.log_text }}</th>
-
-            {% if edit_perm %}
-                {% if log.user_changelog.user == request.user or admin_perm %}
-                    <th><button class="btn btn-primary editButton" log_id="{{ log.id }}">Edytuj</button></th>
-                {% endif %}
-            {% endif %}
-        </tr>
-    {% endfor %}
-    </table>
-
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-
-    <nav aria-label="...">
-        <ul class="pagination pagination-sm">
-            {% for page in pages_list %}
-                <li class="page-item"><a class="page-link" href="/changeLog/{{ name }}/{{ page }}">{{ page }}</a></li>
+                    {% if edit_perm %}
+                        {% if log.user_changelog.user == request.user or admin_perm %}
+                            <th>
+                                <button class="btn btn-primary editButton" log_id="{{ log.id }}">Edytuj</button>
+                            </th>
+                        {% endif %}
+                    {% endif %}
+                </tr>
             {% endfor %}
-        </ul>
-    </nav>
+        </table>
 
-{% else %}
-    <p>Brak zdarzeń</p>
-{% endif %}
-
-{% if write_perm %}
-<form action= "." method="post">
-{% csrf_token %}
-Treść: <input type="text" name="log_text">
-<input type="submit" value="Publikuj" />
-</form>
-{% endif %}
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+              id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 
-<script src="http://code.jquery.com/jquery.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
-{% csrf_token %}
-<script> $(document).ready(function() {
+        <nav aria-label="...">
+            <ul class="pagination pagination-sm">
+                {% for page in pages_list %}
+                    <li class="page-item"><a class="page-link" href="/changeLog/{{ name }}/{{ page }}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
 
-    function getCookie(c_name) {
-        if(document.cookie.length > 0) {
-            c_start = document.cookie.indexOf(c_name + "=");
-            if(c_start != -1) {
-                c_start = c_start + c_name.length + 1;
-                c_end = document.cookie.indexOf(";", c_start);
-                if(c_end == -1) c_end = document.cookie.length;
-                return unescape(document.cookie.substring(c_start,c_end));
-            }
-        }
-        return "";
-    }
+    {% else %}
+        <p>Brak zdarzeń</p>
+    {% endif %}
 
-    $(function () {
-        $.ajaxSetup({
-            headers: {
-                "X-CSRFToken": getCookie("csrftoken")
-            }
-        });
-    });
+    {% if write_perm %}
+        <form action="." method="post">
+            {% csrf_token %}
+            Treść: <input type="text" name="log_text">
+            <input type="submit" value="Publikuj"/>
+        </form>
+    {% endif %}
 
-    $(document).on('click', '.editButton', function() {
-        let log_id = $(this).attr('log_id');
 
-        $.ajax({
-            url : '/changeLog/{{ name }}/update',
-            type : 'POST',
-            data : { log_id : log_id,
-                    csrfmiddlewaretoken: '{{ csrf_token }}'},
-            success: function(data) {
-                $("#"+log_id).html(data);
-                $("tak"+log_id).html(data);
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+    {% csrf_token %}
+    <script> $(document).ready(function () {
+
+        function getCookie(c_name) {
+            if (document.cookie.length > 0) {
+                c_start = document.cookie.indexOf(c_name + "=");
+                if (c_start != -1) {
+                    c_start = c_start + c_name.length + 1;
+                    c_end = document.cookie.indexOf(";", c_start);
+                    if (c_end == -1) c_end = document.cookie.length;
+                    return unescape(document.cookie.substring(c_start, c_end));
                 }
-        });
-    });
-    $(document).on('click', '.saveButton', function() {
-        var log_id = $(this).attr('log_id');
-        var log_text =$("#log_text"+log_id).val();
+            }
+            return "";
+        }
 
-        $.ajax({
-            url : '/changeLog/{{ name }}/save',
-            type : 'POST',
-            data : {log_id: log_id,
+        $(function () {
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken")
+                }
+            });
+        });
+
+        $(document).on('click', '.editButton', function () {
+            let log_id = $(this).attr('log_id');
+
+            $.ajax({
+                url: '/changeLog/{{ name }}/update',
+                type: 'POST',
+                data: {
+                    log_id: log_id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    $("#" + log_id).html(data);
+                    $("tak" + log_id).html(data);
+                }
+            });
+        });
+        $(document).on('click', '.saveButton', function () {
+            var log_id = $(this).attr('log_id');
+            var log_text = $("#log_text" + log_id).val();
+
+            $.ajax({
+                url: '/changeLog/{{ name }}/save',
+                type: 'POST',
+                data: {
+                    log_id: log_id,
                     log_text: log_text,
                     csrfmiddlewaretoken: '{{ csrf_token }}'
-                   },
-            success : function(data) {
-                $("#"+log_id).html(data);
+                },
+                success: function (data) {
+                    $("#" + log_id).html(data);
                 }
+            });
         });
-    });
-});</script>
+    });</script>
 
 {% endblock %}

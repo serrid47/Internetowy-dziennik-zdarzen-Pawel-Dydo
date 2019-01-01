@@ -1,13 +1,14 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 
 {% load static %}
 
-
-
 <!DOCTYPE html>
 <html lang="pl">
-  <head>
+<head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,71 +23,69 @@
     <!-- Custom styles for this template -->
     <link href="{% static "css/logo-nav.css" %}" rel="stylesheet">
 
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
-      <ul class="navbar-nav ml-auto left">
-          {% if user.is_authenticated  %}
-             <li class="nav-item">
-                          <a class="nav-link active" href="/profile">{{ user.username }}</a>
-                        </li>
-             <li class="nav-item">
-                          <a class="nav-link" href="/signout">Wyloguj</a>
-              </li>
-                        {% else %}
-             <li class="nav-item">
-                          <a class="nav-link" href="/signin">Zaloguj</a>
-              </li>
-              <li class="nav-item">
-                          <a class="nav-link" href="/signup">Zarejestruj</a>
-               </li>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <ul class="navbar-nav ml-auto left">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link active" href="/profile">{{ user.username }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/signout">Wyloguj</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/signin">Zaloguj</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/signup">Zarejestruj</a>
+                </li>
 
 
-          {% endif %}
-       </ul>
+            {% endif %}
+        </ul>
 
         <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-                            {% if name %}
+            <ul class="navbar-nav ml-auto">
+                {% if name %}
                     <li class="nav-item">
-              <a class="nav-link" href="/changeLog/{{ name }}">{{ name }}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/changeLog/{{ name }}/settings">Ustawienia</a>
-            </li>
-              {%    endif %}
-              <li class="nav-item ">
-              <a class="nav-link" href="/changeLog/changelogs">Dzienniki
-                <span class="sr-only">(current)</span>
-              </a>
-
-            </li>
-          </ul>
+                        <a class="nav-link" href="/changeLog/{{ name }}">{{ name }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/changeLog/{{ name }}/settings">Ustawienia</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item ">
+                    <a class="nav-link" href="/changeLog/create">Utwórz
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/changeLog/changelogs">Dzienniki
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+            </ul>
         </div>
-      </div>
-    </nav>
-
-    <!-- Page Content -->
-    <div class="container">
-    <hr>
-        <hr>
-        <hr>
-
-      {% block content %}
-
-      {% endblock %}
     </div>
-    <!-- /.container -->
+</nav>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
-    <script src="{% static "vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+<!-- Page Content -->
+<div class="container">
 
-  </body>
+    {% block content %}
+
+    {% endblock %}
+</div>
+<!-- /.container -->
+
+
+</body>
 
 </html>
 

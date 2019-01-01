@@ -1,82 +1,86 @@
 {% extends "DziennikZdarzen/base.html" %}
 {% block content %}
-{% if search_results %}
-   <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            display: inline-table;
-            table-layout:fixed;
-            border: none;
-            word-wrap:break-word;
-            overflow:scroll;
+    {% if search_results %}
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                display: inline-table;
+                table-layout: fixed;
+                border: none;
+                word-wrap: break-word;
+                overflow: scroll;
 
-}        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-}
-        tr:nth-child(even) {
-            background-color: #dddddd;}
-    </style>
+            }
 
-    <script>
-            $(document).ready(function(){
-          $("#myInput").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function() {
-              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+        </style>
+
+        <script>
+            $(document).ready(function () {
+                $("#myInput").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#myTable tr").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
             });
-          });
-        });
-    </script>
+        </script>
 
-<form action= "." method="post">
-{% csrf_token %}
-    <p>
-        <input id="myInput" type="text" placeholder="Search.." name="search_text">
-        <input type="submit" value="Wyszukaj" />
-    </p>
-</form>
+        <form action="." method="post">
+            {% csrf_token %}
+            <p>
+                <input id="myInput" type="text" placeholder="Search.." name="search_text">
+                <input type="submit" value="Wyszukaj"/>
+            </p>
+        </form>
 
-    <table class="table-striped" width="100%">
-    <tr>
-        <th width="8%">Data</th>
-        <th width="5%"></th>
-        <th width="15%">Użytkownik</th>
-        <th>Zmiana</th>
+        <table class="table-striped" width="100%">
+            <tr>
+                <th width="8%">Data</th>
+                <th width="5%"></th>
+                <th width="15%">Użytkownik</th>
+                <th>Zmiana</th>
 
-    </tr>
-    {% for log in search_results %}
-        <tr id={{ log.id }}>
-            <th>{{ log.publication_date }} </th>
-            <th><img src="{{ log.user_changelog.user.avatar.url }}" width="30" height="30"></th>
-            <th>{{ log.user_changelog.user}}</th>
+            </tr>
+            {% for log in search_results %}
+                <tr id={{ log.id }}>
+                    <th>{{ log.publication_date }} </th>
+                    <th><img src="{{ log.user_changelog.user.avatar.url }}" width="30" height="30"></th>
+                    <th><a href="/profile/{{ log.user_changelog.user}}">{{ log.user_changelog.user }}</a></th>
+                    <th>{{ log.log_text }}</th>
+                </tr>
+            {% endfor %}
+        </table>
 
-            <th>{{ log.log_text }}</th>
-
-
-        </tr>
-    {% endfor %}
-    </table>
-
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+              id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 
 
         <nav aria-label="...">
-        <ul class="pagination pagination-sm">
-            {% for page in pages_list %}
-                <li class="page-item"><a class="page-link" href="/changeLog/{{ name }}/search={{ search_text }}/{{ page }}">{{ page }}</a></li>
-            {% endfor %}
-        </ul>
-    </nav>
+            <ul class="pagination pagination-sm">
+                {% for page in pages_list %}
+                    <li class="page-item"><a class="page-link"
+                                             href="/changeLog/{{ name }}/search={{ search_text }}/{{ page }}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
 
-{% else %}
-    <p>Brak zdarzeń</p>
-{% endif %}
+    {% else %}
+        <p>Brak zdarzeń</p>
+    {% endif %}
 
 
 

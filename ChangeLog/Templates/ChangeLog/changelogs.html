@@ -5,35 +5,39 @@
             font-family: arial, sans-serif;
             border-collapse: collapse;
             display: inline-table;
-            table-layout:fixed;
+            table-layout: fixed;
             border: none;
-            word-wrap:break-word;
-            overflow:scroll;
+            word-wrap: break-word;
+            overflow: scroll;
 
-}        td, th {
+        }
+
+        td, th {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
-}
+        }
+
         tr:nth-child(even) {
-            background-color: #dddddd;}
+            background-color: #dddddd;
+        }
     </style>
-<hr>
+    <hr>
     <table class="table-striped" width="100%">
-    <tr>
-        <th>Nazwa</th>
-    </tr>
-
-    {% for changelog in changelog_list %}
         <tr>
-            <th><a class="nav-link" href="/changeLog/{{ changelog.nazwa}}">{{ changelog.nazwa}}</a> </th>
-        </tr>
-    {% empty %}
-                <tr>
-            <th>Brak </th>
+            <th>Nazwa</th>
         </tr>
 
-    {% endfor %}
+        {% for changelog in changelog_list %}
+            <tr>
+                <th><a class="nav-link" href="/changeLog/{{ changelog.nazwa }}">{{ changelog.nazwa }}</a></th>
+            </tr>
+        {% empty %}
+            <tr>
+                <th>Brak</th>
+            </tr>
+
+        {% endfor %}
     </table>
 
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -43,9 +47,9 @@
 
 
 
-<script src="http://code.jquery.com/jquery.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
 
 
 {% endblock %}

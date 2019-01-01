@@ -8,7 +8,8 @@ def check_if_letter_in_string(x, str):
 
 
 def check_permission(permission, changelog, user):
-    return check_if_letter_in_string(permission, UserInChangelog.objects.filter(changeLog__nazwa=changelog).get(user=user).permission)
+    return check_if_letter_in_string(permission, UserInChangelog.objects.filter(changeLog__nazwa=changelog).get(
+        user=user).permission)
 
 
 def check_if_user_in_changelog(changelog, user):

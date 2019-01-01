@@ -1,59 +1,63 @@
 {% extends "DziennikZdarzen/base.html" %}
 {% block content %}
     {% load crispy_forms_tags %}
-        <style>
+    <style>
         table {
             font-family: arial, sans-serif;
             border-collapse: collapse;
             display: inline-table;
-            table-layout:fixed;
+            table-layout: fixed;
             border: none;
-            word-wrap:break-word;
-            overflow:scroll;
+            word-wrap: break-word;
+            overflow: scroll;
 
-}        td, th {
+        }
+
+        td, th {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
-}
+        }
+
         tr:nth-child(even) {
-            background-color: #dddddd;}
+            background-color: #dddddd;
+        }
     </style>
 
     {% if users_list %}
-    <table style="width: 60%" >
-    <tr>
-        <th>Uzytkownik</th>
-        <th>Prawa</th>
-    </tr>
-    {% for user in users_list %}
-        <tr>
-            <td>{{ user.user.username }}</td>
-            <td>{{ user.permission }}</td>
+        <table style="width: 60%">
+            <tr>
+                <th>Uzytkownik</th>
+                <th>Prawa</th>
+            </tr>
+            {% for user in users_list %}
+                <tr>
+                    <td><a href="/profile/{{ user.user.username }}">{{ user.user.username }}</a></td>
+                    <td>{{ user.permission }}</td>
 
-        </tr>
-    {% endfor %}
-    </table>
+                </tr>
+            {% endfor %}
+        </table>
     {% else %}
     {% endif %}
-<hr>
-{% if admin %}
+    <hr>
+    {% if admin %}
 
-    <p class="font-weight-bold">Uprawnienia:</p>
+        <p class="font-weight-bold">Uprawnienia:</p>
         <form action="" method="post">{% csrf_token %}
-        {{ form_role|crispy}}
-        <input type="submit" value="Zapisz" />
+            {{ form_role|crispy }}
+            <input type="submit" value="Zapisz"/>
         </form>
-    </p>
-{% endif %}
-<hr>
-{% if invite %}
-    <p class="font-weight-bold">Zaproszenia:</p>
+        </p>
+    {% endif %}
+    <hr>
+    {% if invite %}
+        <p class="font-weight-bold">Zaproszenia:</p>
         <form action="" method="post">{% csrf_token %}
-        {{ form_invite|crispy}}
-        <input type="submit" value="Zapisz" />
+            {{ form_invite|crispy }}
+            <input type="submit" value="Zapisz"/>
         </form>
-    </p>
-{% endif %}
+        </p>
+    {% endif %}
 
 {% endblock %}
