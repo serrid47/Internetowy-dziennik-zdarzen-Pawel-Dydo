@@ -21,6 +21,7 @@ app_name = 'changeLog'
 urlpatterns = [
     path('create/', views.ChangelogCreate.as_view(), name='changelogCreate'),
     path('<str:name>/settings/', views.ChangelogSettings.as_view(), name='changelogSettings'),
+    path('changelogs/', views.Changelogs.as_view(), name='changelogs'),
     path('<str:name>/<int:page>', views.LogCreate.as_view(), name='logCreate'),
     path('<str:name>/', views.LogCreate.as_view(), name='logCreate'),
     path('<str:name>/search=<str:search_text>/<int:page>/', views.LogSearch.as_view(), name='logSearch'),

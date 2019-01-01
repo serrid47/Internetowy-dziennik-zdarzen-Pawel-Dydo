@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .models import Log, ChangeLog, MyUser, UserInChangelog
 from .forms import LogForm, CreateChangelogForm, InviteToChangelogForm, UserInChangelogForm, LogSearchForm
 from django.contrib.auth.decorators import login_required
-from django.views.generic.edit import CreateView, View, DeleteView
+from django.views.generic import CreateView, View, ListView
 from django.urls import reverse_lazy, reverse
 from .functions import check_permission, check_if_user_in_changelog
 from django.template.loader import render_to_string
@@ -90,15 +90,18 @@ class ChangelogCreate(CreateView):
     def post(self, request):
         form = CreateChangelogForm(request.POST)
         if form.is_valid():
-            instance = form.save(commit=False)
-            instance.save()
             nazwa = form.cleaned_data['nazwa']
-            user_in = UserInChangelog()
-            user_in.user = request.user
-            user_in.changeLog = instance
-            user_in.permission = 'rwixad'
-            user_in.save()
-            return redirect(reverse('changeLog:changelogSettings', kwargs={'name': nazwa}))
+            if(ChangeLog.objects.filter(nazwa=nazwa).count()<1):
+                instance = form.save(commit=False)
+                instance.save()
+                user_in = UserInChangelog()
+                user_in.user = request.user
+                user_in.changeLog = instance
+                user_in.permission = 'rwixad'
+                user_in.save()
+                return redirect(reverse('changeLog:changelogSettings', kwargs={'name': nazwa}))
+
+        return render(request, 'changelog/changelog_form.html', {'form': form, 'alert': 'Dziennik z taką nazwą już istnieje'})
 
     def get(self, request):
         form = CreateChangelogForm()
@@ -166,6 +169,15 @@ def LogSave(request, name):
         html = render_to_string('changelog/logSave.html', {'log': log})
         return HttpResponse(html)
 
+
+class Changelogs(ListView):
+    template_name = 'changelog/changelogs.html'
+    model = ChangeLog
+
+
+    def get_queryset(self):
+        queryset = ChangeLog.objects.filter(userinchangelog__user= self.request.user)
+        return queryset
 
 
 
